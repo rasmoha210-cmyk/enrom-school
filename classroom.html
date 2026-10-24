@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1F4D3A">
+  <title>Classroom | Enrom School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="room-page">
+
+  <header class="top room-top">
+    <a class="back" href="index.html">&larr; Leave class</a>
+    <span class="room-title" id="roomTitle">Classroom</span>
+    <span class="chip" id="roomTimer">20:00</span>
+  </header>
+
+  <main class="room">
+    <section class="stage">
+      <div class="teacher">
+        <div class="t-avatar" id="tAvatar"></div>
+        <div class="t-name" id="tName"></div>
+        <div class="t-look" id="tLook"></div>
+      </div>
+      <div class="board board-room" aria-live="polite">
+        <h2 id="boardHead">Ready when you are</h2>
+        <div id="boardText" class="board-text"></div>
+        <p class="source" id="sourceLine"></p>
+      </div>
+    </section>
+
+    <section class="seats" id="seats" aria-label="Learners in class"></section>
+
+    <section class="ask-box" id="askBox" hidden aria-label="Ask the teacher">
+      <label for="askInput">Ask your teacher a question about this lesson</label>
+      <div class="ask-row">
+        <input id="askInput" maxlength="300" placeholder="Type your question here" autocomplete="off">
+        <button class="btn" id="askBtn">Ask</button>
+      </div>
+      <div class="ask-log" id="askLog" aria-live="polite"></div>
+    </section>
+
+    <div class="room-controls">
+      <div class="picker" id="pickerBox" hidden>
+        <label for="lessonPick">Choose a lesson to revise</label>
+        <select id="lessonPick"></select>
+      </div>
+      <button class="btn" id="startBtn">Start lesson</button>
+      <button class="btn btn-quiet" id="skipBtn" hidden>Finish lesson now</button>
+      <button class="btn" id="testBtn" hidden>Start test</button>
+      <button class="btn btn-quiet" id="voiceBtn" aria-pressed="true">Voice: on</button>
+    </div>
+
+    <section class="voice-box" aria-label="Teacher voice">
+      <label for="voiceSelect">Teacher voice</label>
+      <div class="voice-row">
+        <select id="voiceSelect"></select>
+        <button class="btn btn-small" id="testVoiceBtn">Hear the teacher</button>
+      </div>
+      <p class="hint" id="voiceStatus">Looking for a voice...</p>
+      <p class="hint" id="brainStatus">Teacher brain: checking...</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="cloud.js"></script>
+  <!-- Curriculum: core first, then one file per grade. A grade with no file yet simply uses the sample lesson. -->
+  <script src="curriculum/core.js"></script>
+  <script src="curriculum/grade1.js"></script>
+  <script src="curriculum/grade2.js"></script>
+  <script src="curriculum/grade3.js"></script>
+  <script src="curriculum/grade4.js"></script>
+  <script src="curriculum/grade5.js"></script>
+  <script src="curriculum/grade6.js"></script>
+  <script src="curriculum/grade7.js"></script>
+  <script src="curriculum/grade8.js"></script>
+  <script src="curriculum/grade9.js"></script>
+  <script src="curriculum/grade10.js"></script>
+  <script src="curriculum/grade11.js"></script>
+  <script src="curriculum/grade12.js"></script>
+  <script src="config.js"></script>
+  <script src="classroom.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1F4D3A">
+  <title>Enrom School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="top">
+    <span class="logo">Enrom School</span>
+    <span class="chip" id="gradeChip">Choose your grade</span>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <div class="board" aria-live="polite">
+        <p class="board-day" id="boardDay"></p>
+        <h1 class="board-title" id="boardTitle"></h1>
+        <ul class="board-list" id="boardList"></ul>
+      </div>
+
+      <div class="progress" id="progressBox" hidden>
+        <div class="progress-text" id="progressText"></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <h2 class="section-title">Today's classes</h2>
+      <div id="lessonList" class="lessons"></div>
+
+      <h2 class="section-title">Revise another grade</h2>
+      <p class="hint">Your timetable stays the same. This only opens another grade's classes for revision.</p>
+      <select id="reviseGrade" aria-label="Revise another grade"></select>
+      <div id="reviseList" class="lessons revise-list"></div>
+    </section>
+
+    <!-- EXAM -->
+    <section id="view-exam" class="view">
+      <h1 class="page-title">Exams</h1>
+      <p class="hint">Weekly exams are written on Saturday and marked automatically.</p>
+      <div class="panel">
+        <p>No exam is open right now.</p>
+        <p class="hint">Daily lesson tests appear here after each class.</p>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section id="view-chat" class="view">
+      <h1 class="page-title">Chat</h1>
+      <div class="panel">
+        <p>Chat with your teachers and classmates will be here.</p>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="view-profile" class="view">
+      <h1 class="page-title">Profile</h1>
+      <div class="panel" id="profileCard"></div>
+      <div class="actions" id="profileActions"></div>
+
+      <h2 class="section-title">My progress</h2>
+      <div class="panel" id="historyBox"></div>
+
+      <h2 class="section-title">Settings</h2>
+      <div class="panel">
+        <label class="switch-row">
+          <input type="checkbox" id="emailToggle" checked>
+          Email my parent a report at the end of each day
+        </label>
+      </div>
+
+      <h2 class="section-title">Feedback</h2>
+      <div class="panel">
+        <label for="feedbackText">Tell us what to improve</label>
+        <textarea id="feedbackText" rows="3"></textarea>
+        <button class="btn" id="sendFeedback">Send feedback</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bar" aria-label="Main">
+    <button data-view="home" aria-current="page"><span class="ico">&#8962;</span>Home</button>
+    <button data-view="exam"><span class="ico">&#9998;</span>Exam</button>
+    <button data-view="chat"><span class="ico">&#9993;</span>Chat</button>
+    <button data-view="profile"><span class="ico">&#9786;</span>Profile</button>
+  </nav>
+
+  <!-- POPUP -->
+  <div class="overlay" id="joinOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+
+      <!-- Step: sign in -->
+      <div id="stepLogin">
+        <h2 id="loginTitle">Sign in to Enrom School</h2>
+        <p class="hint">Sign in with Google so your progress is saved every day and is waiting for you next time.</p>
+        <button type="button" class="google-btn" id="googleBtn">
+          <span class="g-badge" aria-hidden="true">G</span> Continue with Google
+        </button>
+        <p class="demo-note" id="demoNote" hidden>
+          Demo mode: Google is not connected yet, so this button creates a test learner and saves progress on this computer only.
+        </p>
+        <div class="actions">
+          <button type="button" class="btn btn-quiet" data-close>Not now</button>
+        </div>
+      </div>
+
+      <!-- Step: first-time details -->
+      <form id="stepDetails" hidden>
+        <h2>Tell us about you</h2>
+        <p class="hint">Step 1 of 2. You only do this once.</p>
+
+        <label for="fName">Your full name</label>
+        <input id="fName" required autocomplete="name">
+
+        <label for="fGrade">Your grade</label>
+        <select id="fGrade" required></select>
+
+        <label for="fParent">Parent or guardian name</label>
+        <input id="fParent" required>
+
+        <label for="fParentEmail">Parent email</label>
+        <input id="fParentEmail" type="email" required>
+
+        <label for="fParentPhone">Parent phone number</label>
+        <input id="fParentPhone" type="tel" required placeholder="07xx xxx xxx">
+
+        <div class="actions">
+          <button type="submit" class="btn">Next: choose teachers</button>
+          <button type="button" class="btn btn-quiet" data-close>Later</button>
+        </div>
+      </form>
+
+      <!-- Step: teachers -->
+      <form id="stepTeachers" hidden>
+        <h2>Choose your teachers</h2>
+        <p class="hint">Step 2 of 2. You keep the same teacher in every class of that subject.</p>
+        <div id="teacherPickers"></div>
+        <div class="actions">
+          <button type="submit" class="btn">Save and go to my classes</button>
+          <button type="button" class="btn btn-quiet" id="backToDetails">Back</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Firebase (needs internet). If it cannot load, the app falls back to demo mode. -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="cloud.js"></script>
+  <!-- Curriculum: core first, then one file per grade. A grade with no file yet simply uses the sample lesson. -->
+  <script src="curriculum/core.js"></script>
+  <script src="curriculum/grade1.js"></script>
+  <script src="curriculum/grade2.js"></script>
+  <script src="curriculum/grade3.js"></script>
+  <script src="curriculum/grade4.js"></script>
+  <script src="curriculum/grade5.js"></script>
+  <script src="curriculum/grade6.js"></script>
+  <script src="curriculum/grade7.js"></script>
+  <script src="curriculum/grade8.js"></script>
+  <script src="curriculum/grade9.js"></script>
+  <script src="curriculum/grade10.js"></script>
+  <script src="curriculum/grade11.js"></script>
+  <script src="curriculum/grade12.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
